@@ -14,22 +14,17 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var faceView: FaceView! {
         didSet {
-            //let pinchRecognizer: UIPinchGestureRecognizer!
-            //faceView.isUserInteractionEnabled = true
-            //let handler = #selector(FaceView.abc)
-//            pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(abcd))
-//            faceView.addGestureRecognizer(pinchRecognizer)
             
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleEyes(byReactingTo:)))
             tapRecognizer.numberOfTapsRequired = 1
             faceView.addGestureRecognizer(tapRecognizer)
             
-            let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(increasingHappiness))
+            let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(decreasingHappiness))
             swipeUpRecognizer.direction = .up
             faceView.addGestureRecognizer(swipeUpRecognizer)
-            let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(decreasingHappiness))
+            let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(increasingHappiness))
             faceView.addGestureRecognizer(swipeDownRecognizer)
-            swipeUpRecognizer.direction = .down
+            swipeDownRecognizer.direction = .down
             updateUI()
         }
     }
@@ -37,7 +32,7 @@ class ViewController: UIViewController {
     @objc func increasingHappiness() {
         expression = expression.happier
     }
-    
+
     @objc func decreasingHappiness() {
         expression = expression.sadder
     }
@@ -45,13 +40,10 @@ class ViewController: UIViewController {
     @objc func toggleEyes(byReactingTo tapRecognizer: UITapGestureRecognizer) {
         if tapRecognizer.state == .ended {
             let eyes: FacialExpression.Eyes = (expression.eyes == .closed) ? .open: .closed
-            expression = FacialExpression(eyes: eyes, mouth: .frown)
+            expression = FacialExpression(eyes: eyes, mouth: expression.mouth)
         }
     }
     
-    @objc func abcd() {
-        print("Hello")
-    }
     
     var expression = FacialExpression(eyes: .closed, mouth: .frown) {
         didSet {

@@ -28,16 +28,16 @@ class FaceView: UIView {
     @IBInspectable
     var color: UIColor = UIColor.blue { didSet { setNeedsDisplay() } }
     
-    @objc func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
-        switch pinchRecognizer.state {
-            
-        case .changed, .ended:
-            scale *= pinchRecognizer.scale
-            pinchRecognizer.scale = 1
-        default:
-            break
-        }
-    }
+//    @objc func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+//        switch pinchRecognizer.state {
+//            
+//        case .changed, .ended:
+//            scale *= pinchRecognizer.scale
+//            pinchRecognizer.scale = 1
+//        default:
+//            break
+//        }
+//    }
     
     @objc func abc() {
         print("Hello")
