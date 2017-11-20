@@ -14,19 +14,34 @@ class FaceView: UIView {
     // Public API
     
     @IBInspectable
-    var scale: CGFloat = 0.9
+    var scale: CGFloat = 0.9 { didSet { setNeedsDisplay() } }
     
     @IBInspectable
-    var eyesOpen: Bool = true
+    var eyesOpen: Bool = true { didSet { setNeedsDisplay() } }
     
     @IBInspectable
-    var mouthCurvature: Double = 1.0 //1.0 is full smile and -1.0 is full frown
+    var mouthCurvature: Double = 1.0 { didSet { setNeedsDisplay() } } //1.0 is full smile and -1.0 is full frown
     
     @IBInspectable
-    var lineWidth: CGFloat = 5.0
+    var lineWidth: CGFloat = 5.0 { didSet { setNeedsDisplay() } }
     
     @IBInspectable
-    var color: UIColor = UIColor.blue
+    var color: UIColor = UIColor.blue { didSet { setNeedsDisplay() } }
+    
+    @objc func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+        switch pinchRecognizer.state {
+            
+        case .changed, .ended:
+            scale *= pinchRecognizer.scale
+            pinchRecognizer.scale = 1
+        default:
+            break
+        }
+    }
+    
+    @objc func abc() {
+        print("Hello")
+    }
     
     //Private Implementation
     
@@ -109,6 +124,7 @@ class FaceView: UIView {
         path.lineWidth = lineWidth
         return path
     }
+    
     override func draw(_ rect: CGRect) {
         color.set()
         pathForSkull().stroke()

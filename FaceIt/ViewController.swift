@@ -9,11 +9,48 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    
 
     @IBOutlet weak var faceView: FaceView! {
         didSet {
+            //let pinchRecognizer: UIPinchGestureRecognizer!
+            //faceView.isUserInteractionEnabled = true
+            //let handler = #selector(FaceView.abc)
+//            pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(abcd))
+//            faceView.addGestureRecognizer(pinchRecognizer)
+            
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleEyes(byReactingTo:)))
+            tapRecognizer.numberOfTapsRequired = 1
+            faceView.addGestureRecognizer(tapRecognizer)
+            
+            let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(increasingHappiness))
+            swipeUpRecognizer.direction = .up
+            faceView.addGestureRecognizer(swipeUpRecognizer)
+            let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(decreasingHappiness))
+            faceView.addGestureRecognizer(swipeDownRecognizer)
+            swipeUpRecognizer.direction = .down
             updateUI()
         }
+    }
+    
+    @objc func increasingHappiness() {
+        expression = expression.happier
+    }
+    
+    @objc func decreasingHappiness() {
+        expression = expression.sadder
+    }
+    
+    @objc func toggleEyes(byReactingTo tapRecognizer: UITapGestureRecognizer) {
+        if tapRecognizer.state == .ended {
+            let eyes: FacialExpression.Eyes = (expression.eyes == .closed) ? .open: .closed
+            expression = FacialExpression(eyes: eyes, mouth: .frown)
+        }
+    }
+    
+    @objc func abcd() {
+        print("Hello")
     }
     
     var expression = FacialExpression(eyes: .closed, mouth: .frown) {
